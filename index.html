@@ -1,38 +1,102 @@
-<!doctype html><html><head>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#155eef"><link rel="manifest" href="manifest.webmanifest">
 <title>Naveed Job Assistant</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f4f6f8;color:#17202a}.wrap{max-width:700px;margin:auto;padding:18px}
-.card{background:white;border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 3px 15px #0001}h1{font-size:24px;margin:4px 0}
-.sub,.small{color:#667085;font-size:14px}label{font-weight:bold;font-size:14px;display:block;margin:14px 0 7px}
-input,textarea{width:100%;border:1px solid #d0d5dd;border-radius:12px;padding:12px;font-size:15px}textarea{min-height:180px}
-button{border:0;border-radius:12px;padding:13px 16px;font-weight:bold;font-size:15px;margin:5px 0}.primary{background:#155eef;color:white;width:100%;margin-top:15px}
-.secondary{background:#eef4ff;color:#155eef}.install{background:#17202a;color:white;width:100%}.score{font-size:30px;font-weight:800}.hidden{display:none}
-</style></head><body><div class="wrap">
-<div class="card"><h1>📱 Naveed Job Assistant</h1><div class="sub">Personal job application helper</div><button id="install" class="install hidden">📲 Install App</button></div>
-<div class="card"><label>Job URL</label><input id="url" placeholder="Paste job link here">
-<div class="small">If the page cannot be read, paste the job description below.</div>
-<label>Job Description</label><textarea id="job" placeholder="Paste vacancy details here..."></textarea>
-<button class="primary" onclick="analyse()">Analyse Job & Prepare Application</button></div>
-<div id="out" class="card hidden"><div class="small">Estimated match</div><div id="score" class="score"></div><div id="matched" class="small"></div>
-<hr><label>Job Title</label><div id="title"></div><label>Company</label><div id="company"></div>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#17202a}
+.wrap{max-width:720px;margin:auto;padding:16px}.card{background:#fff;border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 3px 15px #0001}
+h1{font-size:24px;margin:3px 0}.sub,.hint{color:#667085;font-size:13px}label{font-weight:700;font-size:14px;display:block;margin:13px 0 6px}
+input,textarea{width:100%;border:1px solid #d0d5dd;border-radius:12px;padding:12px;font-size:15px}textarea{min-height:120px}
+button{border:0;border-radius:12px;padding:12px 15px;font-weight:700;font-size:15px;margin:5px 0;cursor:pointer}
+.primary{background:#155eef;color:#fff;width:100%}.secondary{background:#eef4ff;color:#155eef;width:100%}.danger{background:#fff0f0;color:#b42318;width:100%}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hidden{display:none}.score{font-size:30px;font-weight:800}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.saved{color:#067647;font-weight:700;font-size:13px}
+</style></head>
+<body>
+<div class="wrap">
+<div class="card"><h1>📱 Naveed Job Assistant</h1><div class="sub">Your personal job application assistant</div></div>
+
+<div class="card tabs">
+<button class="secondary" onclick="show('profile')">👤 My Profile</button>
+<button class="secondary" onclick="show('job')">💼 New Job</button>
+</div>
+
+<section id="profile" class="card">
+<h2>My Profile</h2><div class="hint">Update your details once. They will be used for future applications on this device.</div>
+<label>Name</label><input id="name">
+<div class="row"><div><label>Phone</label><input id="phone"></div><div><label>Email</label><input id="email"></div></div>
+<label>LinkedIn</label><input id="linkedin">
+<label>Professional Summary</label><textarea id="summary"></textarea>
+<label>Skills (one per line)</label><textarea id="skills"></textarea>
+<label>Education (one per line)</label><textarea id="education"></textarea>
+<label>Certifications (one per line)</label><textarea id="certifications"></textarea>
+<label>Languages (one per line)</label><textarea id="languages"></textarea>
+<button class="primary" onclick="saveProfile()">💾 Save Profile</button>
+<div id="saved" class="saved hidden">Profile saved successfully.</div>
+<button class="danger" onclick="resetProfile()">Reset to original profile</button>
+<p class="hint">Cloud login/storage will be added in the next stage so the same profile can be used on another phone.</p>
+</section>
+
+<section id="job" class="card hidden">
+<h2>💼 New Job</h2>
+<label>Job URL</label><input id="url" placeholder="Paste vacancy link">
+<label>Job Description</label><textarea id="jobtext" placeholder="Paste vacancy details here..."></textarea>
+<button class="primary" onclick="analyse()">Analyse & Prepare Application</button>
+<div id="result" class="hidden">
+<hr><div class="hint">Estimated match</div><div id="score" class="score"></div><div id="matched" class="hint"></div>
+<label>Job Title</label><div id="title"></div><label>Company</label><div id="company"></div>
 <button class="secondary" onclick="download('Cover_Letter.txt',cover)">Download Cover Letter</button>
 <button class="secondary" onclick="download('Email_Draft.txt',email)">Download Email</button>
 <button class="secondary" onclick="navigator.clipboard.writeText(email);alert('Email copied')">Copy Email</button>
 <button class="secondary" onclick="openGmail()">Open Gmail</button>
-<p class="small">Review before sending. Applications are not submitted automatically.</p></div></div>
+</div></section>
+</div>
+
 <script>
-const P={"name": "Muhammad Naveed", "email": "mnaveed.career@gmail.com", "phone": "+92-344-5679379", "linkedin": "www.linkedin.com/in/naveed91", "skills": ["Branch & Banking Operations Management", "AML / KYC, Risk & Compliance", "Audit & Internal Controls", "Team Leadership & Performance Management", "Customer Service & Complaint Resolution", "Cash Management & Teller Operations", "Foreign Currency & Remittance Operations", "Digital Banking & Process Improvement", "Reporting, Administration & Financial Control", "Stakeholder Communication"]};let cover='',email='';
-function title(t){let m=t.match(/(?:job title|position|role)\s*[:\-]\s*([^\n]+)/i);return m?m[1].trim():'Banking / Operations Position'}
-function company(t){let m=t.match(/(?:company|employer|organisation|organization)\s*[:\-]\s*([A-Za-z0-9 &.,'-]{2,80})/i);return m?m[1].trim():'Hiring Company'}
-function analyse(){let j=document.getElementById('job').value.trim();if(!j){alert('Please paste the job description.');return}
-let t=title(j),c=company(j),l=j.toLowerCase(),m=P.skills.filter(s=>s.toLowerCase().split(/[\s\/,&-]+/).some(w=>w.length>3&&l.includes(w)));
-let sc=Math.min(98,Math.max(55,60+m.length*5));document.getElementById('out').classList.remove('hidden');document.getElementById('score').textContent=sc+'%';document.getElementById('matched').textContent='Matched: '+(m.slice(0,7).join(', ')||'Banking operations, customer service');document.getElementById('title').textContent=t;document.getElementById('company').textContent=c;
-cover=`Dear Hiring Manager,\n\nI am writing to apply for the ${t} position at ${c}. With over 11 years of banking experience across branch operations, compliance, customer service, risk management and team leadership, I believe my background is well suited to this opportunity.\n\nIn my current role as Operations Manager at Askari Bank, I manage branch operations, financial transactions, internal controls, customer service and regulatory requirements. Previously, I held Operations Manager roles at Al-Baraka Bank and Summit Bank, where I handled AML/KYC controls, foreign currency operations, audit readiness, staff supervision and process improvement.\n\nI would welcome the opportunity to discuss how my experience can contribute to your organisation.\n\nKind regards,\n${P.name}\n${P.phone}\n${P.email}`;
-email=`Subject: Application for ${t} | ${P.name}\n\nDear Hiring Manager,\n\nPlease find attached my CV for the ${t} position at ${c}.\n\nI have over 11 years of banking experience, including Operations Manager roles covering branch operations, compliance, customer service, risk management and team leadership.\n\nI would appreciate the opportunity to be considered for this position.\n\nKind regards,\n${P.name}\n${P.phone}\n${P.email}`}
+const ORIGINAL={"name": "Muhammad Naveed", "email": "mnaveed.career@gmail.com", "phone": "+92-344-5679379", "linkedin": "www.linkedin.com/in/naveed91", "summary": "Banking Operations Manager with over 11 years of banking experience across branch operations, compliance, customer service, risk management and team leadership.", "skills": ["Branch & Banking Operations Management", "AML / KYC, Risk & Compliance", "Audit & Internal Controls", "Team Leadership & Performance Management", "Customer Service & Complaint Resolution", "Cash Management & Teller Operations", "Foreign Currency & Remittance Operations", "Digital Banking & Process Improvement", "Reporting, Administration & Financial Control", "Stakeholder Communication"], "education": ["Bachelor of Arts (BA)", "Diploma in Commerce (TEVTA)"], "certifications": ["Anti-Money Laundering", "Fair Treatment to Customer", "Information Technology", "Account Opening"], "languages": ["English", "Urdu"]};
+let P=JSON.parse(localStorage.getItem('naveed_profile')||JSON.stringify(ORIGINAL));
+let cover='',email='';
+function fill(){['name','phone','email','linkedin','summary'].forEach(k=>document.getElementById(k).value=P[k]||'');
+['skills','education','certifications','languages'].forEach(k=>document.getElementById(k).value=(P[k]||[]).join('\n'))}
+function saveProfile(){['name','phone','email','linkedin','summary'].forEach(k=>P[k]=document.getElementById(k).value.trim());
+['skills','education','certifications','languages'].forEach(k=>P[k]=document.getElementById(k).value.split('\n').map(x=>x.trim()).filter(Boolean));
+localStorage.setItem('naveed_profile',JSON.stringify(P));document.getElementById('saved').classList.remove('hidden')}
+function resetProfile(){if(confirm('Reset profile to original details?')){localStorage.removeItem('naveed_profile');P=JSON.parse(JSON.stringify(ORIGINAL));fill()}}
+function show(id){document.getElementById('profile').classList.toggle('hidden',id!=='profile');document.getElementById('job').classList.toggle('hidden',id!=='job')}
+function findTitle(t){let m=t.match(/(?:job title|position|role)\s*[:\-]\s*([^\n]+)/i);return m?m[1].trim():'Banking / Operations Position'}
+function findCompany(t){let m=t.match(/(?:company|employer|organisation|organization)\s*[:\-]\s*([A-Za-z0-9 &.,'-]{2,80})/i);return m?m[1].trim():'Hiring Company'}
+function analyse(){let j=document.getElementById('jobtext').value.trim();if(!j){alert('Please paste the job description.');return}let t=findTitle(j),c=findCompany(j),low=j.toLowerCase(),m=P.skills.filter(s=>s.toLowerCase().split(/[\s\/,&-]+/).some(w=>w.length>3&&low.includes(w)));let sc=Math.min(98,Math.max(55,60+m.length*5));document.getElementById('result').classList.remove('hidden');document.getElementById('score').textContent=sc+'%';document.getElementById('matched').textContent='Matched areas: '+(m.slice(0,7).join(', ')||'Banking operations, customer service');document.getElementById('title').textContent=t;document.getElementById('company').textContent=c;
+cover=`Dear Hiring Manager,
+
+I am writing to apply for the ${t} position at ${c}. With over 11 years of banking experience across branch operations, compliance, customer service, risk management and team leadership, I believe my background is well suited to this opportunity.
+
+${P.summary}
+
+I would welcome the opportunity to discuss how my experience can contribute to your organisation.
+
+Kind regards,
+${P.name}
+${P.phone}
+${P.email}`;
+email=`Subject: Application for ${t} | ${P.name}
+
+Dear Hiring Manager,
+
+Please find attached my CV for the ${t} position at ${c}.
+
+I have over 11 years of banking experience, including Operations Manager roles covering branch operations, compliance, customer service, risk management and team leadership.
+
+I would appreciate the opportunity to be considered for this position.
+
+Kind regards,
+${P.name}
+${P.phone}
+${P.email}`}
+}
 function download(n,t){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/plain'}));a.download=n;a.click()}
 function openGmail(){let s=encodeURIComponent(email.split('\n')[0].replace('Subject: ','')),b=encodeURIComponent(email.split('\n\n').slice(1).join('\n\n'));location.href='mailto:?subject='+s+'&body='+b}
-let dp;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;document.getElementById('install').classList.remove('hidden')});document.getElementById('install').onclick=()=>{if(dp){dp.prompt();dp=null}}
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+fill();
 </script></body></html>
