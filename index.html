@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Naveed Job Assistant</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#17202a}
+.wrap{max-width:700px;margin:auto;padding:18px}.card{background:#fff;border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 3px 15px #0001}
+h1{font-size:24px;margin:4px 0 6px}.sub{color:#667085;font-size:14px}
+label{font-weight:700;font-size:14px;display:block;margin:14px 0 7px}
+input,textarea,select{width:100%;border:1px solid #d0d5dd;border-radius:12px;padding:12px;font-size:15px}
+textarea{min-height:180px;resize:vertical}
+button{border:0;border-radius:12px;padding:13px 16px;font-weight:700;font-size:15px;cursor:pointer}
+.primary{background:#155eef;color:white;width:100%;margin-top:15px}.secondary{background:#eef4ff;color:#155eef;margin:5px 0}
+.score{font-size:30px;font-weight:800}.hidden{display:none}.result{white-space:pre-wrap;line-height:1.5}
+.small{font-size:12px;color:#667085}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<h1>📱 Naveed Job Assistant</h1>
+<div class="sub">Your personal CV, cover letter and job application helper</div>
+</div>
+
+<div class="card">
+<label>Job URL</label>
+<input id="url" placeholder="Paste job link here">
+<div class="small">If the website cannot be read, paste the job description below.</div>
+
+<label>Job Description</label>
+<textarea id="job" placeholder="Paste vacancy details here..."></textarea>
+
+<button class="primary" onclick="analyse()">Analyse Job & Prepare Application</button>
+</div>
+
+<div id="output" class="card hidden">
+<div class="small">Estimated match</div>
+<div class="score" id="score"></div>
+<div id="matched" class="small"></div>
+<hr>
+<label>Job Title</label><div id="title"></div>
+<label>Company</label><div id="company"></div>
+
+<button class="secondary" onclick="downloadText('cover.txt',coverText)">Download Cover Letter</button>
+<button class="secondary" onclick="downloadText('email.txt',emailText)">Download Email Draft</button>
+<button class="secondary" onclick="copyText(emailText)">Copy Email</button>
+<button class="secondary" onclick="openGmail()">Open Gmail</button>
+<div class="small">Review everything before sending. This app does not automatically submit applications.</div>
+</div>
+</div>
+
+<script>
+const P = {"name": "Muhammad Naveed", "email": "mnaveed.career@gmail.com", "phone": "+92-344-5679379", "linkedin": "www.linkedin.com/in/naveed91", "location": "Sarai Alamgir, Pakistan", "target_roles": ["Banking Operations Manager", "Branch Operations Manager", "Banking Operations", "Compliance / AML-KYC", "Customer Service", "Administration"], "experience_summary": "Banking professional with over 11 years of progressive experience in branch operations, customer service, cash management, compliance, risk control and team leadership.", "skills": ["Branch & Banking Operations Management", "AML / KYC, Risk & Compliance", "Audit & Internal Controls", "Team Leadership & Performance Management", "Customer Service & Complaint Resolution", "Cash Management & Teller Operations", "Foreign Currency & Remittance Operations", "Digital Banking & Process Improvement", "Reporting, Administration & Financial Control", "Stakeholder Communication"], "experience": [{"title": "Operations Manager", "company": "Askari Bank Limited", "location": "Jhelum, Pakistan", "dates": "June 2025 – Present", "bullets": ["Lead branch operations, ensuring effective workflow, service quality and compliance with regulatory requirements.", "Supervise daily financial transactions, operational risk, internal controls and customer service delivery.", "Coordinate cross-functional staff and monitor performance, processes and service standards.", "Support audits, compliance reviews, risk assessments and branch performance objectives."]}, {"title": "Operations Manager", "company": "Al-Baraka Bank (Pakistan) Limited", "location": "Kharian, Pakistan", "dates": "January 2022 – June 2025", "bullets": ["Managed end-to-end branch operations, customer servicing, compliance and digital banking support.", "Maintained effective AML/KYC controls and compliance with central bank requirements.", "Led staff training, performance reviews, workflow improvements and operational control initiatives.", "Managed foreign currency operations, including inward/outward remittances, export proceeds and foreign demand drafts."]}, {"title": "Operations Manager", "company": "Summit Bank Limited", "location": "Sarai Alamgir, Pakistan", "dates": "July 2020 – January 2022", "bullets": ["Directed branch operations, budgeting, service delivery and staff supervision.", "Conducted risk assessments and strengthened internal control measures.", "Managed foreign currency transactions and ensured compliance with SBP guidelines.", "Improved customer experience through process simplification and digital banking services."]}, {"title": "Customer Services Officer", "company": "Summit Bank Limited", "location": "Sarai Alamgir, Pakistan", "dates": "October 2019 – July 2020", "bullets": ["Delivered front-line banking services and managed account-related operations and customer enquiries.", "Promoted banking products and digital banking services while maintaining AML/CFT compliance.", "Handled customer complaints and escalated concerns professionally."]}, {"title": "Universal Teller", "company": "Summit Bank Limited", "location": "Sarai Alamgir, Pakistan", "dates": "December 2014 – October 2019", "bullets": ["Processed deposits, withdrawals, remittances and account transfers accurately.", "Managed cash transactions, daily balancing and transaction accuracy.", "Provided front-line customer support and resolved transaction discrepancies.", "Supported foreign currency transactions and AML/KYC requirements."]}, {"title": "Associate Relationship Manager", "company": "NIB Bank Limited", "location": "Sarai Alamgir, Pakistan", "dates": "December 2013 – December 2014", "bullets": ["Supported customer relationship management, account services and banking product promotion.", "Assisted customers with account requirements and day-to-day banking queries."]}], "education": ["Bachelor of Commerce, Al-Khair University, Pakistan | 2011 – 2013", "Diploma in Commerce, Govt. College of Commerce, Jhelum, Pakistan | 2007 – 2009", "Matriculation, BISE Gujranwala, Pakistan | 2004 – 2006"], "certifications": ["Anti-Money Laundering & Compliance", "Account Opening Specialist", "Fraud Risk Management", "Information Technology", "Fundamentals of Islamic Banking Operations", "AML/CFT/CPF Overview"], "languages": ["English", "Urdu"]};
+let coverText="", emailText="";
+const skills=P.skills||[];
+function findTitle(t){
+ let m=t.match(/(?:job title|position|role)\s*[:\-]\s*([^\n]+)/i);
+ return m?m[1].trim():"Banking / Operations Position";
+}
+function findCompany(t){
+ let m=t.match(/(?:company|employer|organisation|organization)\s*[:\-]\s*([A-Za-z0-9 &.,'-]{2,80})/i);
+ return m?m[1].trim():"Hiring Company";
+}
+function analyse(){
+ const job=document.getElementById("job").value.trim();
+ if(!job){alert("Please paste the job description. If you only have a link, open it and copy the vacancy text.");return}
+ const title=findTitle(job), company=findCompany(job);
+ const low=job.toLowerCase();
+ const matched=skills.filter(s=>s.toLowerCase().split(/[\s\/,&-]+/).some(w=>w.length>3&&low.includes(w)));
+ const score=Math.min(98,Math.max(55,60+matched.length*5));
+ document.getElementById("output").classList.remove("hidden");
+ document.getElementById("score").textContent=score+"%";
+ document.getElementById("matched").textContent="Matched areas: "+(matched.slice(0,7).join(", ")||"Banking operations, customer service");
+ document.getElementById("title").textContent=title;
+ document.getElementById("company").textContent=company;
+ coverText=`Dear Hiring Manager,
+
+I am writing to apply for the ${title} position at ${company}. With over 11 years of banking experience across branch operations, compliance, customer service, risk management and team leadership, I believe my background is well suited to this opportunity.
+
+In my current role as Operations Manager at Askari Bank, I manage branch operations, financial transactions, internal controls, customer service and regulatory requirements. Previously, I held Operations Manager roles at Al-Baraka Bank and Summit Bank, where I handled AML/KYC controls, foreign currency operations, audit readiness, staff supervision and process improvement.
+
+I would welcome the opportunity to discuss how my experience can contribute to your organisation.
+
+Kind regards,
+${P.name}
+${P.phone}
+${P.email}`;
+ emailText=`Subject: Application for ${title} | ${P.name}
+
+Dear Hiring Manager,
+
+Please find attached my CV for the ${title} position at ${company}.
+
+I have over 11 years of banking experience, including Operations Manager roles covering branch operations, compliance, customer service, risk management and team leadership.
+
+I would appreciate the opportunity to be considered for this position.
+
+Kind regards,
+${P.name}
+${P.phone}
+${P.email}`;
+}
+function downloadText(name,text){
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"text/plain"}));a.download=name;a.click();
+}
+function copyText(t){navigator.clipboard.writeText(t);alert("Copied.")}
+function openGmail(){
+ const subject=encodeURIComponent(emailText.split("\n")[0].replace("Subject: ",""));
+ const body=encodeURIComponent(emailText.split("\n\n").slice(1).join("\n\n"));
+ location.href="mailto:?subject="+subject+"&body="+body;
+}
+</script>
+</body></html>
