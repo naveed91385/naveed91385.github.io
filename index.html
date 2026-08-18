@@ -227,6 +227,9 @@ button{
       <button class="secondary" onclick="show('job')">
         💼 New Job
       </button>
+      <button class="secondary" onclick="show('experience')">
+  💼 Experience
+      </button>
     </div>
 
     <!-- PROFILE -->
@@ -273,35 +276,35 @@ button{
       <label>Languages</label>
       <textarea id="languages" placeholder="Write one language per line"></textarea>
 
-      <!-- EXPERIENCE -->
-      <hr>
-
-      <h2>💼 Work Experience</h2>
-
-      <div class="hint">
-        Add all your previous jobs. You can add as many experiences as you want.
-      </div>
-
-      <div id="experienceList"></div>
-
-      <button class="secondary" onclick="addExperience()">
-        ➕ Add Another Experience
-      </button>
-
-      <button class="primary" onclick="saveProfile()">
-        💾 Save Profile
-      </button>
-
-      <div id="saved" class="saved hidden">
-        Profile saved successfully.
-      </div>
-
-      <button class="danger" onclick="resetProfile()">
-        Reset to Original Profile
-      </button>
-
     </section>
+<!-- EXPERIENCE -->
+<section id="experience" class="card hidden">
 
+  <h2>💼 Work Experience</h2>
+
+  <div class="hint">
+    Add all your previous jobs. You can add as many experiences as you want.
+  </div>
+
+  <div id="experienceList"></div>
+
+  <button class="secondary" onclick="addExperience()">
+    ➕ Add Another Experience
+  </button>
+
+  <button class="primary" onclick="saveProfile()">
+    💾 Save Profile
+  </button>
+
+  <div id="saved" class="saved hidden">
+    Profile saved successfully.
+  </div>
+
+  <button class="danger" onclick="resetProfile()">
+    Reset to Original Profile
+  </button>
+
+</section>
     <!-- JOB -->
     <section id="job" class="card hidden">
 
@@ -996,21 +999,19 @@ async function resetProfile(){
 function show(id){
 
   document
-  .getElementById("profile")
-  .classList
-  .toggle(
-    "hidden",
-    id !== "profile"
-  );
-
+    .getElementById("profile")
+    .classList
+    .toggle("hidden", id !== "profile");
 
   document
-  .getElementById("job")
-  .classList
-  .toggle(
-    "hidden",
-    id !== "job"
-  );
+    .getElementById("experience")
+    .classList
+    .toggle("hidden", id !== "experience");
+
+  document
+    .getElementById("job")
+    .classList
+    .toggle("hidden", id !== "job");
 
 }
 
