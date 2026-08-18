@@ -105,9 +105,15 @@ button{
 }
 
 .tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
+  display:flex;
+  flex-wrap:wrap;
   gap:8px;
+}
+
+.tabs .secondary{
+  width:auto;
+  flex:1 1 30%;
+  margin:0;
 }
 
 .hidden{
