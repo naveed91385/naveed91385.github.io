@@ -9,310 +9,1211 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#17202a}
-.wrap{max-width:720px;margin:auto;padding:16px}
-.card{background:#fff;border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 3px 15px #0001}
-h1{font-size:24px;margin:3px 0}
-h2{margin-top:5px}
-.sub,.hint{color:#667085;font-size:13px}
-label{font-weight:700;font-size:14px;display:block;margin:13px 0 6px}
-input,textarea{width:100%;border:1px solid #d0d5dd;border-radius:12px;padding:12px;font-size:15px}
-textarea{min-height:120px}
-button{border:0;border-radius:12px;padding:12px 15px;font-weight:700;font-size:15px;margin:5px 0;cursor:pointer}
-.primary{background:#155eef;color:#fff;width:100%}
-.secondary{background:#eef4ff;color:#155eef;width:100%}
-.danger{background:#fff0f0;color:#b42318;width:100%}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.hidden{display:none}
-.score{font-size:30px;font-weight:800}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.saved{color:#067647;font-weight:700;font-size:13px}
-.loginbox{text-align:center}
-.user{font-size:13px;color:#667085;margin:8px 0}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  color:#17202a;
+}
+
+.wrap{
+  max-width:720px;
+  margin:auto;
+  padding:16px;
+}
+
+.card{
+  background:#fff;
+  border-radius:18px;
+  padding:18px;
+  margin:12px 0;
+  box-shadow:0 3px 15px #0001;
+}
+
+h1{
+  font-size:24px;
+  margin:3px 0;
+}
+
+h2{
+  margin-top:5px;
+}
+
+h3{
+  margin:8px 0;
+}
+
+.sub,.hint{
+  color:#667085;
+  font-size:13px;
+}
+
+label{
+  font-weight:700;
+  font-size:14px;
+  display:block;
+  margin:13px 0 6px;
+}
+
+input,textarea,select{
+  width:100%;
+  border:1px solid #d0d5dd;
+  border-radius:12px;
+  padding:12px;
+  font-size:15px;
+  background:#fff;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+button{
+  border:0;
+  border-radius:12px;
+  padding:12px 15px;
+  font-weight:700;
+  font-size:15px;
+  margin:5px 0;
+  cursor:pointer;
+}
+
+.primary{
+  background:#155eef;
+  color:#fff;
+  width:100%;
+}
+
+.secondary{
+  background:#eef4ff;
+  color:#155eef;
+  width:100%;
+}
+
+.danger{
+  background:#fff0f0;
+  color:#b42318;
+  width:100%;
+}
+
+.small-danger{
+  background:#fff0f0;
+  color:#b42318;
+  width:auto;
+}
+
+.tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.score{
+  font-size:30px;
+  font-weight:800;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.saved{
+  color:#067647;
+  font-weight:700;
+  font-size:13px;
+  margin-top:5px;
+}
+
+.loginbox{
+  text-align:center;
+}
+
+.user{
+  font-size:13px;
+  color:#667085;
+  margin:8px 0;
+}
+
+.experience-card{
+  border:1px solid #e4e7ec;
+  border-radius:14px;
+  padding:14px;
+  margin:12px 0;
+  background:#fafafa;
+}
+
+.experience-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+
+.experience-header h3{
+  margin:0;
+  font-size:16px;
+}
+
+.badge{
+  display:inline-block;
+  background:#eef4ff;
+  color:#155eef;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.empty{
+  color:#667085;
+  font-size:14px;
+  padding:10px 0;
+}
+
+@media(max-width:520px){
+  .row{
+    grid-template-columns:1fr;
+  }
+
+  .experience-header{
+    align-items:flex-start;
+  }
+}
 </style>
 </head>
 
 <body>
+
 <div class="wrap">
 
-<div class="card">
-<h1>📱 Naveed Job Assistant</h1>
-<div class="sub">Your personal job application assistant</div>
-</div>
+  <div class="card">
+    <h1>📱 Naveed Job Assistant</h1>
+    <div class="sub">Your personal job application assistant</div>
+  </div>
 
-<div id="loginBox" class="card loginbox">
-<h2>🔐 Sign in</h2>
-<div class="hint">Sign in with Google to keep your profile available on any phone.</div>
-<button class="primary" onclick="login()">Continue with Google</button>
-</div>
+  <!-- LOGIN -->
+  <div id="loginBox" class="card loginbox">
+    <h2>🔐 Sign in</h2>
+    <div class="hint">
+      Sign in with Google to keep your profile and experience available on any phone.
+    </div>
 
-<div id="app" class="hidden">
+    <button class="primary" onclick="login()">
+      Continue with Google
+    </button>
+  </div>
 
-<div class="card">
-<div id="userInfo" class="user"></div>
-<button class="secondary" onclick="logout()">Sign Out</button>
-</div>
+  <!-- APP -->
+  <div id="app" class="hidden">
 
-<div class="card tabs">
-<button class="secondary" onclick="show('profile')">👤 My Profile</button>
-<button class="secondary" onclick="show('job')">💼 New Job</button>
-</div>
+    <div class="card">
+      <div id="userInfo" class="user"></div>
+      <button class="secondary" onclick="logout()">Sign Out</button>
+    </div>
 
-<section id="profile" class="card">
-<h2>My Profile</h2>
-<div class="hint">Update your details once. Your profile is saved securely in the cloud.</div>
+    <div class="card tabs">
+      <button class="secondary" onclick="show('profile')">
+        👤 My Profile
+      </button>
 
-<label>Name</label>
-<input id="name">
+      <button class="secondary" onclick="show('job')">
+        💼 New Job
+      </button>
+    </div>
 
-<div class="row">
-<div>
-<label>Phone</label>
-<input id="phone">
-</div>
-<div>
-<label>Email</label>
-<input id="email">
-</div>
-</div>
+    <!-- PROFILE -->
+    <section id="profile" class="card">
 
-<label>LinkedIn</label>
-<input id="linkedin">
+      <h2>👤 My Profile</h2>
 
-<label>Professional Summary</label>
-<textarea id="summary"></textarea>
+      <div class="hint">
+        Your profile and work experience are saved securely in the cloud.
+      </div>
 
-<label>Skills (one per line)</label>
-<textarea id="skills"></textarea>
+      <label>Name</label>
+      <input id="name">
 
-<label>Education (one per line)</label>
-<textarea id="education"></textarea>
+      <div class="row">
 
-<label>Certifications (one per line)</label>
-<textarea id="certifications"></textarea>
+        <div>
+          <label>Phone</label>
+          <input id="phone">
+        </div>
 
-<label>Languages (one per line)</label>
-<textarea id="languages"></textarea>
+        <div>
+          <label>Email</label>
+          <input id="email">
+        </div>
 
-<button class="primary" onclick="saveProfile()">💾 Save Profile</button>
-<div id="saved" class="saved hidden">Profile saved successfully.</div>
+      </div>
 
-<button class="danger" onclick="resetProfile()">Reset to original profile</button>
-</section>
+      <label>LinkedIn</label>
+      <input id="linkedin">
 
-<section id="job" class="card hidden">
-<h2>💼 New Job</h2>
+      <label>Professional Summary</label>
+      <textarea id="summary"></textarea>
 
-<label>Job URL</label>
-<input id="url" placeholder="Paste vacancy link">
+      <label>Skills</label>
+      <textarea id="skills" placeholder="Write one skill per line"></textarea>
 
-<label>Job Description</label>
-<textarea id="jobtext" placeholder="Paste vacancy details here..."></textarea>
+      <label>Education</label>
+      <textarea id="education" placeholder="Write one qualification per line"></textarea>
 
-<button class="primary" onclick="analyse()">Analyse & Prepare Application</button>
+      <label>Certifications</label>
+      <textarea id="certifications" placeholder="Write one certification per line"></textarea>
 
-<div id="result" class="hidden">
-<hr>
-<div class="hint">Estimated match</div>
-<div id="score" class="score"></div>
-<div id="matched" class="hint"></div>
+      <label>Languages</label>
+      <textarea id="languages" placeholder="Write one language per line"></textarea>
 
-<label>Job Title</label>
-<div id="title"></div>
+      <!-- EXPERIENCE -->
+      <hr>
 
-<label>Company</label>
-<div id="company"></div>
+      <h2>💼 Work Experience</h2>
 
-<button class="secondary" onclick="download('Cover_Letter.txt',cover)">Download Cover Letter</button>
-<button class="secondary" onclick="download('Email_Draft.txt',email)">Download Email</button>
-<button class="secondary" onclick="navigator.clipboard.writeText(email);alert('Email copied')">Copy Email</button>
-<button class="secondary" onclick="openGmail()">Open Gmail</button>
-</div>
-</section>
+      <div class="hint">
+        Add all your previous jobs. You can add as many experiences as you want.
+      </div>
 
-</div>
+      <div id="experienceList"></div>
+
+      <button class="secondary" onclick="addExperience()">
+        ➕ Add Another Experience
+      </button>
+
+      <button class="primary" onclick="saveProfile()">
+        💾 Save Profile
+      </button>
+
+      <div id="saved" class="saved hidden">
+        Profile saved successfully.
+      </div>
+
+      <button class="danger" onclick="resetProfile()">
+        Reset to Original Profile
+      </button>
+
+    </section>
+
+    <!-- JOB -->
+    <section id="job" class="card hidden">
+
+      <h2>💼 New Job</h2>
+
+      <label>Job URL</label>
+      <input id="url" placeholder="Paste vacancy link">
+
+      <label>Job Description</label>
+      <textarea
+        id="jobtext"
+        placeholder="Paste vacancy details here..."
+      ></textarea>
+
+      <button class="primary" onclick="analyse()">
+        Analyse & Prepare Application
+      </button>
+
+      <div id="result" class="hidden">
+
+        <hr>
+
+        <div class="hint">Estimated Match</div>
+        <div id="score" class="score"></div>
+
+        <div id="matched" class="hint"></div>
+
+        <label>Job Title</label>
+        <div id="title"></div>
+
+        <label>Company</label>
+        <div id="company"></div>
+
+        <label>Relevant Experience</label>
+        <div id="relevantExperience"></div>
+
+        <button
+          class="secondary"
+          onclick="download('Cover_Letter.txt',cover)"
+        >
+          Download Cover Letter
+        </button>
+
+        <button
+          class="secondary"
+          onclick="download('Email_Draft.txt',email)"
+        >
+          Download Email
+        </button>
+
+        <button
+          class="secondary"
+          onclick="copyEmail()"
+        >
+          Copy Email
+        </button>
+
+        <button
+          class="secondary"
+          onclick="openGmail()"
+        >
+          Open Gmail
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL="https://lriasxwwhqyalpexymjm.supabase.co";
 
-const SUPABASE_KEY="sb_publishable_9N9d2hPSj6oncjdC49W6Cw_Bw43xWOr";
+const SUPABASE_URL =
+"https://lriasxwwhqyalpexymjm.supabase.co";
 
-const {createClient}=supabase;
-const db=createClient(SUPABASE_URL,SUPABASE_KEY);
+const SUPABASE_KEY =
+"sb_publishable_9N9d2hPSj6oncjdC49W6Cw_Bw43xWOr";
 
-const ORIGINAL={
-name:"Muhammad Naveed",
-email:"mnaveed.career@gmail.com",
-phone:"+92-344-5679379",
-linkedin:"www.linkedin.com/in/naveed91",
-summary:"Banking Operations Manager with over 11 years of banking experience across branch operations, compliance, customer service, risk management and team leadership.",
-skills:[
-"Branch & Banking Operations Management",
-"AML / KYC, Risk & Compliance",
-"Audit & Internal Controls",
-"Team Leadership & Performance Management",
-"Customer Service & Complaint Resolution",
-"Cash Management & Teller Operations",
-"Foreign Currency & Remittance Operations",
-"Digital Banking & Process Improvement",
-"Reporting, Administration & Financial Control",
-"Stakeholder Communication"
-],
-education:["Bachelor of Arts (BA)","Diploma in Commerce (TEVTA)"],
-certifications:[
-"Anti-Money Laundering",
-"Fair Treatment to Customer",
-"Information Technology",
-"Account Opening"
-],
-languages:["English","Urdu"]
+const {createClient} = supabase;
+
+const db = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* ORIGINAL PROFILE */
+
+const ORIGINAL = {
+
+  name:"Muhammad Naveed",
+
+  email:"mnaveed.career@gmail.com",
+
+  phone:"+92-344-5679379",
+
+  linkedin:"www.linkedin.com/in/naveed91",
+
+  summary:
+  "Banking Operations Manager with over 11 years of banking experience across branch operations, compliance, customer service, risk management and team leadership.",
+
+  skills:[
+    "Branch & Banking Operations Management",
+    "AML / KYC, Risk & Compliance",
+    "Audit & Internal Controls",
+    "Team Leadership & Performance Management",
+    "Customer Service & Complaint Resolution",
+    "Cash Management & Teller Operations",
+    "Foreign Currency & Remittance Operations",
+    "Digital Banking & Process Improvement",
+    "Reporting, Administration & Financial Control",
+    "Stakeholder Communication"
+  ],
+
+  education:[
+    "Bachelor of Arts (BA)",
+    "Diploma in Commerce (TEVTA)"
+  ],
+
+  certifications:[
+    "Anti-Money Laundering",
+    "Fair Treatment to Customer",
+    "Information Technology",
+    "Account Opening"
+  ],
+
+  languages:[
+    "English",
+    "Urdu"
+  ],
+
+  experience:[
+
+    {
+      company:"Askari Islamic Bank",
+      position:"Operations Manager",
+      start:"13 June 2025",
+      end:"Present",
+      responsibilities:
+      "Branch operations management, customer service, compliance, cash management, audit coordination, team supervision and daily operational control.",
+      achievements:""
+    },
+
+    {
+      company:"Summit Bank",
+      position:"Customer Services Officer",
+      start:"October 2019",
+      end:"July 2020",
+      responsibilities:
+      "Customer services, account opening, KYC documentation, customer requests, branch operations and service quality.",
+      achievements:""
+    },
+
+    {
+      company:"Summit Bank",
+      position:"Universal Teller",
+      start:"December 2014",
+      end:"October 2019",
+      responsibilities:
+      "Cash handling, teller operations, deposits, withdrawals, remittances, balancing, customer service and branch cash controls.",
+      achievements:""
+    },
+
+    {
+      company:"NIB Bank Limited",
+      position:"Associate Relationship Manager",
+      start:"December 2013",
+      end:"December 2014",
+      responsibilities:
+      "Customer relationship management, account services, sales support and branch banking activities.",
+      achievements:""
+    }
+
+  ]
 };
 
-let P=JSON.parse(localStorage.getItem("naveed_profile")||JSON.stringify(ORIGINAL));
-let cover="";
-let email="";
 
-function fill(){
-["name","phone","email","linkedin","summary"].forEach(k=>{
-document.getElementById(k).value=P[k]||"";
-});
+/* LOAD LOCAL PROFILE */
 
-["skills","education","certifications","languages"].forEach(k=>{
-document.getElementById(k).value=(P[k]||[]).join("\n");
-});
-}
+let P = JSON.parse(
+  localStorage.getItem("naveed_profile")
+  || JSON.stringify(ORIGINAL)
+);
+
+let cover = "";
+let email = "";
+
+
+/* LOGIN */
 
 async function login(){
-const {error}=await db.auth.signInWithOAuth({
-provider:"google",
-options:{
-redirectTo:window.location.origin
-}
-});
 
-if(error) alert(error.message);
+  const {error} =
+  await db.auth.signInWithOAuth({
+
+    provider:"google",
+
+    options:{
+      redirectTo:window.location.origin
+    }
+
+  });
+
+  if(error){
+
+    alert(error.message);
+
+  }
+
 }
+
+
+/* LOGOUT */
 
 async function logout(){
-await db.auth.signOut();
-location.reload();
+
+  await db.auth.signOut();
+
+  location.reload();
+
 }
+
+
+/* LOAD PROFILE FROM CLOUD */
 
 async function loadProfile(user){
-const {data,error}=await db
-.from("profiles")
-.select("data")
-.eq("id",user.id)
-.maybeSingle();
 
-if(!error && data && data.data){
-P=data.data;
-localStorage.setItem("naveed_profile",JSON.stringify(P));
-}else{
-P=JSON.parse(localStorage.getItem("naveed_profile")||JSON.stringify(ORIGINAL));
+  const {data,error} =
+  await db
+  .from("profiles")
+  .select("data")
+  .eq("id",user.id)
+  .maybeSingle();
+
+
+  if(
+    !error &&
+    data &&
+    data.data
+  ){
+
+    P = data.data;
+
+  }else{
+
+    P = JSON.parse(
+      localStorage.getItem("naveed_profile")
+      || JSON.stringify(ORIGINAL)
+    );
+
+  }
+
+
+  if(!Array.isArray(P.experience)){
+
+    P.experience = [];
+
+  }
+
+
+  localStorage.setItem(
+    "naveed_profile",
+    JSON.stringify(P)
+  );
+
+
+  fill();
+
+
+  document
+  .getElementById("loginBox")
+  .classList
+  .add("hidden");
+
+
+  document
+  .getElementById("app")
+  .classList
+  .remove("hidden");
+
+
+  document
+  .getElementById("userInfo")
+  .textContent =
+  "Signed in as " +
+  (user.email || "Google user");
+
 }
 
-fill();
 
-document.getElementById("loginBox").classList.add("hidden");
-document.getElementById("app").classList.remove("hidden");
+/* FILL PROFILE */
 
-document.getElementById("userInfo").textContent=
-"Signed in as "+(user.email||"Google user");
+function fill(){
+
+  [
+    "name",
+    "phone",
+    "email",
+    "linkedin",
+    "summary"
+  ].forEach(k=>{
+
+    document.getElementById(k).value =
+    P[k] || "";
+
+  });
+
+
+  [
+    "skills",
+    "education",
+    "certifications",
+    "languages"
+  ].forEach(k=>{
+
+    document.getElementById(k).value =
+    (P[k] || []).join("\n");
+
+  });
+
+
+  renderExperiences();
+
 }
+
+
+/* EXPERIENCE UI */
+
+function renderExperiences(){
+
+  const box =
+  document.getElementById("experienceList");
+
+  box.innerHTML = "";
+
+
+  if(
+    !P.experience ||
+    P.experience.length === 0
+  ){
+
+    box.innerHTML =
+    '<div class="empty">No work experience added yet.</div>';
+
+    return;
+
+  }
+
+
+  P.experience.forEach(
+    (exp,index)=>{
+
+      const card =
+      document.createElement("div");
+
+      card.className =
+      "experience-card";
+
+
+      card.innerHTML = `
+
+        <div class="experience-header">
+
+          <h3>
+            Experience ${index + 1}
+          </h3>
+
+          <span class="badge">
+            ${exp.position || "Position"}
+          </span>
+
+        </div>
+
+
+        <label>Company</label>
+
+        <input
+          value="${escapeAttr(exp.company || "")}"
+          oninput="updateExperience(${index},'company',this.value)"
+        >
+
+
+        <label>Position / Job Title</label>
+
+        <input
+          value="${escapeAttr(exp.position || "")}"
+          oninput="updateExperience(${index},'position',this.value)"
+        >
+
+
+        <div class="row">
+
+          <div>
+
+            <label>Start Date</label>
+
+            <input
+              value="${escapeAttr(exp.start || "")}"
+              placeholder="e.g. June 2025"
+              oninput="updateExperience(${index},'start',this.value)"
+            >
+
+          </div>
+
+
+          <div>
+
+            <label>End Date</label>
+
+            <input
+              value="${escapeAttr(exp.end || "")}"
+              placeholder="e.g. Present"
+              oninput="updateExperience(${index},'end',this.value)"
+            >
+
+          </div>
+
+        </div>
+
+
+        <label>Responsibilities</label>
+
+        <textarea
+          oninput="updateExperience(${index},'responsibilities',this.value)"
+        >${escapeHtml(exp.responsibilities || "")}</textarea>
+
+
+        <label>Achievements</label>
+
+        <textarea
+          placeholder="Optional"
+          oninput="updateExperience(${index},'achievements',this.value)"
+        >${escapeHtml(exp.achievements || "")}</textarea>
+
+
+        <button
+          class="small-danger"
+          onclick="removeExperience(${index})"
+        >
+          🗑 Remove Experience
+        </button>
+
+      `;
+
+
+      box.appendChild(card);
+
+    }
+  );
+
+}
+
+
+/* SAFE HTML */
+
+function escapeHtml(value){
+
+  return String(value)
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeAttr(value){
+
+  return escapeHtml(value);
+
+}
+
+
+/* UPDATE EXPERIENCE */
+
+function updateExperience(
+  index,
+  field,
+  value
+){
+
+  if(!P.experience[index]){
+
+    P.experience[index] = {};
+
+  }
+
+  P.experience[index][field] = value;
+
+}
+
+
+/* ADD EXPERIENCE */
+
+function addExperience(){
+
+  if(!Array.isArray(P.experience)){
+
+    P.experience = [];
+
+  }
+
+
+  P.experience.push({
+
+    company:"",
+    position:"",
+    start:"",
+    end:"",
+    responsibilities:"",
+    achievements:""
+
+  });
+
+
+  renderExperiences();
+
+
+  const cards =
+  document.querySelectorAll(
+    ".experience-card"
+  );
+
+
+  if(cards.length){
+
+    cards[cards.length-1]
+    .scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+  }
+
+}
+
+
+/* REMOVE EXPERIENCE */
+
+function removeExperience(index){
+
+  if(
+    confirm(
+      "Remove this experience?"
+    )
+  ){
+
+    P.experience.splice(
+      index,
+      1
+    );
+
+    renderExperiences();
+
+  }
+
+}
+
+
+/* SAVE PROFILE */
 
 async function saveProfile(){
-["name","phone","email","linkedin","summary"].forEach(k=>{
-P[k]=document.getElementById(k).value.trim();
-});
 
-["skills","education","certifications","languages"].forEach(k=>{
-P[k]=document.getElementById(k).value
-.split("\n")
-.map(x=>x.trim())
-.filter(Boolean);
-});
+  [
+    "name",
+    "phone",
+    "email",
+    "linkedin",
+    "summary"
+  ].forEach(k=>{
 
-localStorage.setItem("naveed_profile",JSON.stringify(P));
+    P[k] =
+    document.getElementById(k)
+    .value
+    .trim();
 
-const {data:{user}}=await db.auth.getUser();
+  });
 
-if(user){
-const {error}=await db
-.from("profiles")
-.upsert({
-id:user.id,
-data:P,
-updated_at:new Date().toISOString()
-});
 
-if(error){
-alert("Cloud save failed: "+error.message);
-return;
+  [
+    "skills",
+    "education",
+    "certifications",
+    "languages"
+  ].forEach(k=>{
+
+    P[k] =
+    document.getElementById(k)
+    .value
+    .split("\n")
+    .map(x=>x.trim())
+    .filter(Boolean);
+
+  });
+
+
+  if(!Array.isArray(P.experience)){
+
+    P.experience = [];
+
+  }
+
+
+  localStorage.setItem(
+    "naveed_profile",
+    JSON.stringify(P)
+  );
+
+
+  const {
+    data:{user}
+  } =
+  await db.auth.getUser();
+
+
+  if(user){
+
+    const {error} =
+    await db
+    .from("profiles")
+    .upsert({
+
+      id:user.id,
+
+      data:P,
+
+      updated_at:
+      new Date().toISOString()
+
+    });
+
+
+    if(error){
+
+      alert(
+        "Cloud save failed: "
+        + error.message
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  document
+  .getElementById("saved")
+  .classList
+  .remove("hidden");
+
 }
-}
 
-document.getElementById("saved").classList.remove("hidden");
-}
+
+/* RESET */
 
 async function resetProfile(){
-if(confirm("Reset profile to original details?")){
-localStorage.removeItem("naveed_profile");
-P=JSON.parse(JSON.stringify(ORIGINAL));
-fill();
-await saveProfile();
+
+  if(
+    confirm(
+      "Reset profile to original details?"
+    )
+  ){
+
+    localStorage.removeItem(
+      "naveed_profile"
+    );
+
+
+    P =
+    JSON.parse(
+      JSON.stringify(ORIGINAL)
+    );
+
+
+    fill();
+
+
+    await saveProfile();
+
+  }
+
 }
-}
+
+
+/* TABS */
 
 function show(id){
-document.getElementById("profile").classList.toggle("hidden",id!=="profile");
-document.getElementById("job").classList.toggle("hidden",id!=="job");
+
+  document
+  .getElementById("profile")
+  .classList
+  .toggle(
+    "hidden",
+    id !== "profile"
+  );
+
+
+  document
+  .getElementById("job")
+  .classList
+  .toggle(
+    "hidden",
+    id !== "job"
+  );
+
 }
 
-function findTitle(t){
-let m=t.match(/(?:job title|position|role)\s*[:\-]\s*([^\n]+)/i);
-return m?m[1].trim():"Banking / Operations Position";
+
+/* JOB TITLE */
+
+function findTitle(text){
+
+  const m =
+  text.match(
+    /(?:job title|position|role)\s*[:\-]\s*([^\n]+)/i
+  );
+
+
+  return m
+  ? m[1].trim()
+  : "Banking / Operations Position";
+
 }
 
-function findCompany(t){
-let m=t.match(/(?:company|employer|organisation|organization)\s*[:\-]\s*([A-Za-z0-9 &.,'-]{2,80})/i);
-return m?m[1].trim():"Hiring Company";
+
+/* COMPANY */
+
+function findCompany(text){
+
+  const m =
+  text.match(
+    /(?:company|employer|organisation|organization)\s*[:\-]\s*([A-Za-z0-9 &.,'-]{2,80})/i
+  );
+
+
+  return m
+  ? m[1].trim()
+  : "Hiring Company";
+
 }
+
+
+/* ANALYSE JOB */
 
 function analyse(){
-let j=document.getElementById("jobtext").value.trim();
 
-if(!j){
-alert("Please paste the job description.");
-return;
-}
+  const j =
+  document
+  .getElementById("jobtext")
+  .value
+  .trim();
 
-let t=findTitle(j);
-let c=findCompany(j);
-let low=j.toLowerCase();
 
-let m=P.skills.filter(s=>
-s.toLowerCase()
-.split(/[\s\/,&-]+/)
-.some(w=>w.length>3&&low.includes(w))
-);
+  if(!j){
 
-let sc=Math.min(98,Math.max(55,60+m.length*5));
+    alert(
+      "Please paste the job description."
+    );
 
-document.getElementById("result").classList.remove("hidden");
-document.getElementById("score").textContent=sc+"%";
-document.getElementById("matched").textContent=
-"Matched areas: "+(m.slice(0,7).join(", ")||"Banking operations, customer service");
+    return;
 
-document.getElementById("title").textContent=t;
-document.getElementById("company").textContent=c;
+  }
 
-cover=`Dear Hiring Manager,
 
-I am writing to apply for the ${t} position at ${c}. With over 11 years of banking experience across branch operations, compliance, customer service, risk management and team leadership, I believe my background is well suited to this opportunity.
+  const t = findTitle(j);
+
+  const c = findCompany(j);
+
+  const low = j.toLowerCase();
+
+
+  /* SKILL MATCH */
+
+  const matchedSkills =
+  P.skills.filter(skill=>
+
+    skill
+    .toLowerCase()
+    .split(/[\s\/,&-]+/)
+    .some(word=>
+      word.length > 3 &&
+      low.includes(word)
+    )
+
+  );
+
+
+  /* EXPERIENCE MATCH */
+
+  const matchedExperience =
+  (P.experience || [])
+  .filter(exp=>{
+
+    const text = (
+      (exp.position || "") +
+      " " +
+      (exp.company || "") +
+      " " +
+      (exp.responsibilities || "") +
+      " " +
+      (exp.achievements || "")
+    ).toLowerCase();
+
+
+    return text
+    .split(/[\s\/,&-]+/)
+    .some(word=>
+      word.length > 4 &&
+      low.includes(word)
+    );
+
+  });
+
+
+  const experienceBonus =
+  Math.min(
+    20,
+    matchedExperience.length * 7
+  );
+
+
+  const skillScore =
+  matchedSkills.length * 5;
+
+
+  const sc =
+  Math.min(
+    98,
+    Math.max(
+      55,
+      60 +
+      skillScore +
+      experienceBonus
+    )
+  );
+
+
+  document
+  .getElementById("result")
+  .classList
+  .remove("hidden");
+
+
+  document
+  .getElementById("score")
+  .textContent =
+  sc + "%";
+
+
+  document
+  .getElementById("matched")
+  .textContent =
+  "Matched skills: " +
+  (
+    matchedSkills
+    .slice(0,7)
+    .join(", ")
+    ||
+    "Banking operations, customer service"
+  );
+
+
+  document
+  .getElementById("title")
+  .textContent = t;
+
+
+  document
+  .getElementById("company")
+  .textContent = c;
+
+
+  const relevant =
+  matchedExperience
+  .slice(0,3)
+  .map(exp=>
+    `${exp.position || ""} at ${exp.company || ""}`
+  );
+
+
+  document
+  .getElementById("relevantExperience")
+  .textContent =
+  relevant.length
+  ? relevant.join(" | ")
+  : "General banking and operations experience";
+
+
+  /* COVER LETTER */
+
+  const expText =
+  matchedExperience
+  .slice(0,2)
+  .map(exp=>
+    `${exp.position} at ${exp.company} (${exp.start} - ${exp.end})`
+  )
+  .join(", ");
+
+
+  cover =
+`Dear Hiring Manager,
+
+I am writing to apply for the ${t} position at ${c}.
+
+I have over 11 years of professional banking experience across branch operations, customer service, compliance, cash management, audit coordination, risk controls and team leadership.
+
+My relevant experience includes ${expText || "banking operations and branch management"}.
 
 ${P.summary}
 
@@ -323,13 +1224,19 @@ ${P.name}
 ${P.phone}
 ${P.email}`;
 
-email=`Subject: Application for ${t} | ${P.name}
+
+  /* EMAIL */
+
+  email =
+`Subject: Application for ${t} | ${P.name}
 
 Dear Hiring Manager,
 
 Please find attached my CV for the ${t} position at ${c}.
 
-I have over 11 years of banking experience, including Operations Manager roles covering branch operations, compliance, customer service, risk management and team leadership.
+I have over 11 years of banking experience, including branch operations, customer service, compliance, risk management and team leadership.
+
+My experience includes ${expText || "banking operations and customer service"}.
 
 I would appreciate the opportunity to be considered for this position.
 
@@ -337,112 +1244,70 @@ Kind regards,
 ${P.name}
 ${P.phone}
 ${P.email}`;
+
 }
 
-function download(n,t){
-let a=document.createElement("a");
-a.href=URL.createObjectURL(new Blob([t],{type:"text/plain"}));
-a.download=n;
-a.click();
+
+/* DOWNLOAD */
+
+function download(
+  filename,
+  text
+){
+
+  const a =
+  document.createElement("a");
+
+
+  a.href =
+  URL.createObjectURL(
+    new Blob(
+      [text],
+      {type:"text/plain"}
+    )
+  );
+
+
+  a.download = filename;
+
+  a.click();
+
 }
+
+
+/* COPY EMAIL */
+
+async function copyEmail(){
+
+  try{
+
+    await navigator
+    .clipboard
+    .writeText(email);
+
+    alert("Email copied");
+
+  }catch(e){
+
+    alert(
+      "Could not copy automatically."
+    );
+
+  }
+
+}
+
+
+/* GMAIL */
 
 function openGmail(){
-let s=encodeURIComponent(
-email.split("\n")[0].replace("Subject: ","")
-);
 
-let b=encodeURIComponent(
-email.split("\n\n").slice(1).join("\n\n")
-);
+  const subject =
+  encodeURIComponent(
+    email
+    .split("\n")[0]
+    .replace("Subject: ","")
+  );
 
-location.href="mailto:?subject="+s+"&body="+b;
-}
 
-async function start(){
-const {data:{session}}=await db.auth.getSession();
-
-if(session){
-await loadProfile(session.user);
-}
-
-db.auth.onAuthStateChange(async(event,session)=>{
-if(session){
-await loadProfile(session.user);
-}
-});
-}
-
-if("serviceWorker"in navigator){
-navigator.serviceWorker.register("sw.js");
-}
-
-start();
-</script>
-
-</body>
-  </html><div id="saved" class="saved hidden">Profile saved successfully.</div>
-<button class="danger" onclick="resetProfile()">Reset to original profile</button>
-<p class="hint">Cloud login/storage will be added in the next stage so the same profile can be used on another phone.</p>
-</section>
-
-<section id="job" class="card hidden">
-<h2>💼 New Job</h2>
-<label>Job URL</label><input id="url" placeholder="Paste vacancy link">
-<label>Job Description</label><textarea id="jobtext" placeholder="Paste vacancy details here..."></textarea>
-<button class="primary" onclick="analyse()">Analyse & Prepare Application</button>
-<div id="result" class="hidden">
-<hr><div class="hint">Estimated match</div><div id="score" class="score"></div><div id="matched" class="hint"></div>
-<label>Job Title</label><div id="title"></div><label>Company</label><div id="company"></div>
-<button class="secondary" onclick="download('Cover_Letter.txt',cover)">Download Cover Letter</button>
-<button class="secondary" onclick="download('Email_Draft.txt',email)">Download Email</button>
-<button class="secondary" onclick="navigator.clipboard.writeText(email);alert('Email copied')">Copy Email</button>
-<button class="secondary" onclick="openGmail()">Open Gmail</button>
-</div></section>
-</div>
-
-<script>
-const ORIGINAL={"name": "Muhammad Naveed", "email": "mnaveed.career@gmail.com", "phone": "+92-344-5679379", "linkedin": "www.linkedin.com/in/naveed91", "summary": "Banking Operations Manager with over 11 years of banking experience across branch operations, compliance, customer service, risk management and team leadership.", "skills": ["Branch & Banking Operations Management", "AML / KYC, Risk & Compliance", "Audit & Internal Controls", "Team Leadership & Performance Management", "Customer Service & Complaint Resolution", "Cash Management & Teller Operations", "Foreign Currency & Remittance Operations", "Digital Banking & Process Improvement", "Reporting, Administration & Financial Control", "Stakeholder Communication"], "education": ["Bachelor of Arts (BA)", "Diploma in Commerce (TEVTA)"], "certifications": ["Anti-Money Laundering", "Fair Treatment to Customer", "Information Technology", "Account Opening"], "languages": ["English", "Urdu"]};
-let P=JSON.parse(localStorage.getItem('naveed_profile')||JSON.stringify(ORIGINAL));
-let cover='',email='';
-function fill(){['name','phone','email','linkedin','summary'].forEach(k=>document.getElementById(k).value=P[k]||'');
-['skills','education','certifications','languages'].forEach(k=>document.getElementById(k).value=(P[k]||[]).join('\n'))}
-function saveProfile(){['name','phone','email','linkedin','summary'].forEach(k=>P[k]=document.getElementById(k).value.trim());
-['skills','education','certifications','languages'].forEach(k=>P[k]=document.getElementById(k).value.split('\n').map(x=>x.trim()).filter(Boolean));
-localStorage.setItem('naveed_profile',JSON.stringify(P));document.getElementById('saved').classList.remove('hidden')}
-function resetProfile(){if(confirm('Reset profile to original details?')){localStorage.removeItem('naveed_profile');P=JSON.parse(JSON.stringify(ORIGINAL));fill()}}
-function show(id){document.getElementById('profile').classList.toggle('hidden',id!=='profile');document.getElementById('job').classList.toggle('hidden',id!=='job')}
-function findTitle(t){let m=t.match(/(?:job title|position|role)\s*[:\-]\s*([^\n]+)/i);return m?m[1].trim():'Banking / Operations Position'}
-function findCompany(t){let m=t.match(/(?:company|employer|organisation|organization)\s*[:\-]\s*([A-Za-z0-9 &.,'-]{2,80})/i);return m?m[1].trim():'Hiring Company'}
-function analyse(){let j=document.getElementById('jobtext').value.trim();if(!j){alert('Please paste the job description.');return}let t=findTitle(j),c=findCompany(j),low=j.toLowerCase(),m=P.skills.filter(s=>s.toLowerCase().split(/[\s\/,&-]+/).some(w=>w.length>3&&low.includes(w)));let sc=Math.min(98,Math.max(55,60+m.length*5));document.getElementById('result').classList.remove('hidden');document.getElementById('score').textContent=sc+'%';document.getElementById('matched').textContent='Matched areas: '+(m.slice(0,7).join(', ')||'Banking operations, customer service');document.getElementById('title').textContent=t;document.getElementById('company').textContent=c;
-cover=`Dear Hiring Manager,
-
-I am writing to apply for the ${t} position at ${c}. With over 11 years of banking experience across branch operations, compliance, customer service, risk management and team leadership, I believe my background is well suited to this opportunity.
-
-${P.summary}
-
-I would welcome the opportunity to discuss how my experience can contribute to your organisation.
-
-Kind regards,
-${P.name}
-${P.phone}
-${P.email}`;
-email=`Subject: Application for ${t} | ${P.name}
-
-Dear Hiring Manager,
-
-Please find attached my CV for the ${t} position at ${c}.
-
-I have over 11 years of banking experience, including Operations Manager roles covering branch operations, compliance, customer service, risk management and team leadership.
-
-I would appreciate the opportunity to be considered for this position.
-
-Kind regards,
-${P.name}
-${P.phone}
-${P.email}`}
-}
-function download(n,t){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/plain'}));a.download=n;a.click()}
-function openGmail(){let s=encodeURIComponent(email.split('\n')[0].replace('Subject: ','')),b=encodeURIComponent(email.split('\n\n').slice(1).join('\n\n'));location.href='mailto:?subject='+s+'&body='+b}
-if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
-fill();
-</script></body></html>
+ 
