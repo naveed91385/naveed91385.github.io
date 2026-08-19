@@ -1315,5 +1315,20 @@ function openGmail(){
     .replace("Subject: ","")
   );
 
+  const body =
+  encodeURIComponent(
+    email
+    .split("\n")
+    .slice(2)
+    .join("\n")
+  );
+
+  window.location.href =
+    "https://mail.google.com/mail/?view=cm&fs=1&su="
+    + subject
+    + "&body="
+    + body;
+
+}
 
  
