@@ -507,25 +507,42 @@ let email = "";
 
 async function login(){
 
-  const {error} =
-  await db.auth.signInWithOAuth({
+  try{
 
-    provider:"google",
+    const {error} =
+    await db.auth.signInWithOAuth({
 
-    options:{
-    redirectTo:window.location.origin + window.location.pathname
+      provider:"google",
+
+      options:{
+        redirectTo:
+          window.location.origin +
+          window.location.pathname
+      }
+
+    });
+
+    if(error){
+
+      alert(
+        "Google Login Error:\n" +
+        error.message
+      );
+
+      return;
+
     }
 
-  });
+  }catch(err){
 
-  if(error){
-
-    alert(error.message);
+    alert(
+      "Login Error:\n" +
+      err.message
+    );
 
   }
 
 }
-
 
 /* LOGOUT */
 
