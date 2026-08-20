@@ -450,59 +450,50 @@ return String(value || "").trim();
 
 async function login(){
 
-const errorBox =
-document.getElementById("loginError");
+  const errorBox =
+    document.getElementById("loginError");
 
-errorBox.innerHTML = "";
+  errorBox.innerHTML =
+    '<div class="success">Login button is working. Connecting to Google...</div>';
 
-try{
+  try{
 
-if(!window.supabase){
+    const { data, error } =
+      await db.auth.signInWithOAuth({
 
-throw new Error(
-"Supabase library load nahi hui."
-);
+        provider: "google",
 
-}
+        options: {
+          redirectTo:
+            "https://naveed91385.github.io/"
+        }
 
-const { error } =
-await db.auth.signInWithOAuth({
+      });
 
-provider:"google",
+    if(error){
+      throw error;
+    }
 
-options:{
+    console.log("OAuth started:", data);
 
-redirectTo:
-"https://naveed91385.github.io/",
+  }catch(err){
 
-queryParams:{
-prompt:"select_account"
-}
+    console.error(
+      "Google Login Error:",
+      err
+    );
 
-}
+    errorBox.innerHTML =
+      '<div class="error">' +
+      escapeHtml(
+        err.message ||
+        "Google login failed."
+      ) +
+      '</div>';
 
-});
-
-if(error){
-throw error;
-}
-
-}catch(err){
-
-console.error(err);
-
-errorBox.innerHTML =
-'<div class="error">' +
-escapeHtml(
-err.message ||
-"Google login failed."
-) +
-'</div>';
+  }
 
 }
-
-}
-
 
 /* AUTH */
 
