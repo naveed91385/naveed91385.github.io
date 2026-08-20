@@ -810,56 +810,64 @@ db.auth.onAuthStateChange(
 /* =========================================================
    LOGIN
 ========================================================= */
-
 async function login(){
 
   const errorBox =
-  document.getElementById("loginError");
+    document.getElementById("loginError");
 
   errorBox.innerHTML = "";
 
   try{
 
-    const {
-      error
-    } =
+    if(typeof supabase === "undefined"){
+
+      throw new Error(
+        "Supabase library load nahi hui."
+      );
+
+    }
+
+    const { error } =
     await db.auth.signInWithOAuth({
 
-      provider:"google",
+      provider: "google",
 
-      options:{
+      options: {
 
         redirectTo:
-        window.location.origin +
-        window.location.pathname
+          "https://naveed91385.github.io/naveed91385.github.io/index.html",
+
+        queryParams: {
+          access_type: "offline",
+          prompt: "select_account"
+        }
 
       }
 
     });
 
     if(error){
-
-      errorBox.innerHTML =
-      '<div class="error">' +
-      escapeHtml(error.message) +
-      '</div>';
-
+      throw error;
     }
 
   }catch(err){
 
+    console.error(
+      "Google Login Error:",
+      err
+    );
+
     errorBox.innerHTML =
-    '<div class="error">' +
-    escapeHtml(
-      err.message ||
-      "Google login failed."
-    ) +
-    '</div>';
+      '<div class="error">' +
+      escapeHtml(
+        err.message ||
+        "Google login failed."
+      ) +
+      '</div>';
 
   }
 
-}
-
+  }
 
 /* =========================================================
    LOAD CLOUD PROFILE
